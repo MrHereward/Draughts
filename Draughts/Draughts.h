@@ -1,6 +1,8 @@
 #pragma once
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
+#include <vector>
+#include "Pawn.h"
 
 class Draughts
 {
@@ -9,6 +11,8 @@ private:
 	unsigned int Height{ 800 };
 
 	sf::RenderWindow Window;
+
+	std::vector<Pawn*> Pawns;
 
 	sf::Texture BoardTexture;
 
@@ -23,4 +27,6 @@ public:
 	Draughts();
 
 	void MainLoop();
+
+	void PlacePawns();
 };

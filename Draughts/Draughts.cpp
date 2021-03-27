@@ -1,7 +1,7 @@
 #include "Draughts.h"
 
 Draughts::Draughts()
-	: Window(sf::VideoMode(Width, Height), "Draughts", sf::Style::Close)
+	: Window{ sf::VideoMode(Width, Height), "Draughts", sf::Style::Close }
 {
 	BoardTexture.loadFromFile("Board.png");
 
@@ -17,23 +17,14 @@ void Draughts::MainLoop()
 {
 	sf::Event MainEvent;
 
-	sf::Sprite WhitePawn;
-	sf::Sprite BlackPawn;
-	sf::Sprite WhiteQueenPawn;
-	sf::Sprite BlackQueenPawn;
+	sf::Vector2i MousePosition;
 
-	WhitePawn.setTexture(WhiteTexture);
-	BlackPawn.setTexture(BlackTexture);
-	WhiteQueenPawn.setTexture(WhiteQueenTexture);
-	BlackQueenPawn.setTexture(BlackQueenTexture);
-
-	WhitePawn.setPosition(136, 48);
-	BlackPawn.setPosition(312, 48);
-	WhiteQueenPawn.setPosition(488, 48);
-	BlackQueenPawn.setPosition(664, 48);
+	PlacePawns();
 
 	while (Window.isOpen())
 	{
+		MousePosition = sf::Mouse::getPosition(Window);
+
 		while (Window.pollEvent(MainEvent))
 		{
 			switch (MainEvent.type)
@@ -43,17 +34,64 @@ void Draughts::MainLoop()
 
 				break;
 
+			case sf::Event::MouseButtonPressed:
+				if (MainEvent.key.code == sf::Mouse::Left)
+				{
+					for (const auto& Element : Pawns)
+					{
+						Element->MousePressed(MousePosition);
+					}
+				}
+
+				break;
+
+			case sf::Event::MouseButtonReleased:
+				if (MainEvent.key.code == sf::Mouse::Left)
+				{
+					for (const auto& Element : Pawns)
+					{
+						Element->MouseReleased();
+					}
+				}
+
+				break;
+
 			}
+		}
+
+		for (const auto& Element : Pawns)
+		{
+			Element->Move(MousePosition);
 		}
 
 		Window.clear();
 
 		Window.draw(BoardSprite);
-		Window.draw(WhitePawn);
-		Window.draw(BlackPawn);
-		Window.draw(WhiteQueenPawn);
-		Window.draw(BlackQueenPawn);
+
+		for (const auto& Element : Pawns)
+		{
+			Element->Draw(Window);
+		}
 
 		Window.display();
+	}
+}
+
+void Draughts::PlacePawns()
+{
+	for (int i = 48; i < 312; i += 88)
+	{
+		for (int j = 48 + (1 - ((i / 88) % 2)) * 88; j < 752; j += 176)
+		{
+			Pawns.push_back(new Pawn(j, i, PAWNTYPE::WHITE, WhiteTexture));
+		}
+	}
+
+	for (int i = 488; i < 752; i += 88)
+	{
+		for (int j = 48 + (1 - ((i / 88) % 2)) * 88; j < 752; j += 176)
+		{
+			Pawns.push_back(new Pawn(j, i, PAWNTYPE::BLACK, BlackTexture));
+		}
 	}
 }
