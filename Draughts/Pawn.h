@@ -1,6 +1,7 @@
 #pragma once
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
+#include <string>
 
 enum class PAWNTYPE : unsigned char
 {
@@ -16,6 +17,8 @@ private:
 	PAWNTYPE PawnType;
 
 	sf::Vector2i MovePosition{};
+
+	std::string Position;
 
 	bool IsMove;
 
@@ -33,5 +36,8 @@ public:
 	void Move(sf::Vector2i MousePosition);
 
 	void Draw(sf::RenderWindow& Window);
+
+	std::string GetPosition();
+	void SetPosition();
 
 };

@@ -5,6 +5,7 @@ Pawn::Pawn(float x, float y, PAWNTYPE _PawnType, sf::Texture& _Texture)
 {
 	setPosition(x, y);
 	setTexture(_Texture);
+	SetPosition();
 }
 
 void Pawn::SetPawnType(PAWNTYPE _PawnType, sf::Texture _Texture)
@@ -30,7 +31,18 @@ void Pawn::MousePressed(sf::Vector2i MousePosition)
 
 void Pawn::MouseReleased()
 {
-	IsMove = { false };
+	if (IsMove)
+	{
+		sf::Vector2f CurrentPosition{ getPosition() };
+
+		IsMove = { false };
+
+		sf::Vector2f NewPosition{ sf::Vector2f(48 + (88 * static_cast<int>(getPosition().x / 88)), 48 + (88 * static_cast<int>(getPosition().y / 88))) };
+
+		setPosition(NewPosition);
+
+		SetPosition();
+	}
 }
 
 void Pawn::Move(sf::Vector2i MousePosition)
@@ -44,4 +56,19 @@ void Pawn::Move(sf::Vector2i MousePosition)
 void Pawn::Draw(sf::RenderWindow& Window)
 {
 	Window.draw(*this);
+}
+
+std::string Pawn::GetPosition()
+{
+	return Position;
+}
+
+void Pawn::SetPosition()
+{
+	std::string _Position;
+
+	_Position = { static_cast<char>(((getPosition().x - 48) / 88 + 1) + 48) };
+	_Position += static_cast<char>(((getPosition().y - 48) / 88) + 97);
+
+	Position = { _Position };
 }
