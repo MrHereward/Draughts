@@ -2,18 +2,19 @@
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
 #include <vector>
-#include <iostream>
+#include <string>
 #include "Pawn.h"
+#include "PawnsManager.h"
 
 class Draughts
 {
 private:
+	PawnsManager* Manager{};
+
 	unsigned int Width{ 800 };
 	unsigned int Height{ 800 };
 
 	sf::RenderWindow Window;
-
-	std::vector<Pawn*> Pawns;
 
 	sf::Texture BoardTexture;
 
@@ -24,10 +25,12 @@ private:
 
 	sf::Sprite BoardSprite;
 
+	std::string MovesHistory{};
+
 public:
 	Draughts();
 
 	void MainLoop();
 
-	void PlacePawns();
+	std::vector<Pawn*> PlacePawns();
 };

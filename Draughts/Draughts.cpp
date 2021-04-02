@@ -19,7 +19,7 @@ void Draughts::MainLoop()
 
 	sf::Vector2i MousePosition;
 
-	PlacePawns();
+	Manager = { PawnsManager::GetInstance(PlacePawns()) };
 
 	while (Window.isOpen())
 	{
@@ -37,10 +37,7 @@ void Draughts::MainLoop()
 			case sf::Event::MouseButtonPressed:
 				if (MainEvent.key.code == sf::Mouse::Left)
 				{
-					for (const auto& Element : Pawns)
-					{
-						Element->MousePressed(MousePosition);
-					}
+					Manager->MousePressed(MousePosition);
 				}
 
 				break;
@@ -48,10 +45,7 @@ void Draughts::MainLoop()
 			case sf::Event::MouseButtonReleased:
 				if (MainEvent.key.code == sf::Mouse::Left)
 				{
-					for (const auto& Element : Pawns)
-					{
-						Element->MouseReleased();
-					}
+					Manager->MouseReleased();
 				}
 
 				break;
@@ -59,31 +53,27 @@ void Draughts::MainLoop()
 			}
 		}
 
-		for (const auto& Element : Pawns)
-		{
-			Element->Move(MousePosition);
-		}
+		Manager->Move(MousePosition);
 
 		Window.clear();
 
 		Window.draw(BoardSprite);
 
-		for (const auto& Element : Pawns)
-		{
-			Element->Draw(Window);
-		}
+		Manager->Draw(Window);
 
 		Window.display();
 	}
 }
 
-void Draughts::PlacePawns()
+std::vector<Pawn*> Draughts::PlacePawns()
 {
+	std::vector<Pawn*> Pawns;
+
 	for (int i = 48; i < 312; i += 88)
 	{
 		for (int j = 48 + (1 - ((i / 88) % 2)) * 88; j < 752; j += 176)
 		{
-			Pawns.push_back(new Pawn(j, i, PAWNTYPE::WHITE, WhiteTexture));
+			Pawns.push_back(new Pawn(static_cast<float>(j), static_cast<float>(i), PAWNTYPE::WHITE, WhiteTexture));
 		}
 	}
 
@@ -91,7 +81,9 @@ void Draughts::PlacePawns()
 	{
 		for (int j = 48 + (1 - ((i / 88) % 2)) * 88; j < 752; j += 176)
 		{
-			Pawns.push_back(new Pawn(j, i, PAWNTYPE::BLACK, BlackTexture));
+			Pawns.push_back(new Pawn(static_cast<float>(j), static_cast<float>(i), PAWNTYPE::BLACK, BlackTexture));
 		}
 	}
+
+	return Pawns;
 }

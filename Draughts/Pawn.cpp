@@ -19,48 +19,24 @@ PAWNTYPE Pawn::GetPawnType()
 	return PawnType;
 }
 
-void Pawn::MousePressed(sf::Vector2i MousePosition)
+void Pawn::SetMovePosition(sf::Vector2i _Position)
 {
-	if (getGlobalBounds().contains(MousePosition.x, MousePosition.y))
-	{
-		IsMove = { true };
-
-		MovePosition = { sf::Vector2i(MousePosition.x - getPosition().x, MousePosition.y - getPosition().y) };
-	}
+	MovePosition = { _Position };
 }
 
-void Pawn::MouseReleased()
+sf::Vector2i Pawn::GetMovePosition()
 {
-	if (IsMove)
-	{
-		sf::Vector2f CurrentPosition{ getPosition() };
-
-		IsMove = { false };
-
-		sf::Vector2f NewPosition{ sf::Vector2f(48 + (88 * static_cast<int>(getPosition().x / 88)), 48 + (88 * static_cast<int>(getPosition().y / 88))) };
-
-		setPosition(NewPosition);
-
-		SetPosition();
-	}
+	return MovePosition;
 }
 
-void Pawn::Move(sf::Vector2i MousePosition)
+void Pawn::SetIsMove(bool _IsMove)
 {
-	if (IsMove)
-	{
-		setPosition(MousePosition.x - MovePosition.x, MousePosition.y - MovePosition.y);
-	}
+	IsMove = { _IsMove };
 }
 
-void Pawn::Draw(sf::RenderWindow& Window)
+bool Pawn::GetIsMove()
 {
-	Window.draw(*this);
-}
-
-std::string Pawn::GetPosition()
-{
-	return Position;
+	return IsMove;
 }
 
 void Pawn::SetPosition()
@@ -71,4 +47,19 @@ void Pawn::SetPosition()
 	_Position += static_cast<char>(((getPosition().y - 48) / 88) + 97);
 
 	Position = { _Position };
+}
+
+std::string Pawn::GetPosition()
+{
+	return Position;
+}
+
+std::string Pawn::CalcualtePosition()
+{
+	std::string _Position;
+
+	_Position = { static_cast<char>(((getPosition().x - 48) / 88 + 1) + 48) };
+	_Position += static_cast<char>(((getPosition().y - 48) / 88) + 97);
+
+	return _Position;
 }
