@@ -146,11 +146,13 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Pawn.cpp" />
     <ClCompile Include="PawnsManager.cpp" />
+    <ClCompile Include="QueenPawn.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Draughts.h" />
     <ClInclude Include="Pawn.h" />
     <ClInclude Include="PawnsManager.h" />
+    <ClInclude Include="QueenPawn.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

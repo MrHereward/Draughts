@@ -19,7 +19,9 @@ void Draughts::MainLoop()
 
 	sf::Vector2i MousePosition;
 
-	Manager = { PawnsManager::GetInstance(PlacePawns()) };
+	Manager = { PawnsManager::GetInstance() };
+
+	Manager->AddPawns(PlacePawns());
 
 	while (Window.isOpen())
 	{
@@ -37,7 +39,7 @@ void Draughts::MainLoop()
 			case sf::Event::MouseButtonPressed:
 				if (MainEvent.key.code == sf::Mouse::Left)
 				{
-					Manager->MousePressed(MousePosition);
+					Manager->MousePressedPawns(MousePosition);
 				}
 
 				break;
@@ -45,7 +47,7 @@ void Draughts::MainLoop()
 			case sf::Event::MouseButtonReleased:
 				if (MainEvent.key.code == sf::Mouse::Left)
 				{
-					Manager->MouseReleased();
+					Manager->MouseReleasedPawns();
 				}
 
 				break;
@@ -53,13 +55,13 @@ void Draughts::MainLoop()
 			}
 		}
 
-		Manager->Move(MousePosition);
+		Manager->MovePawns(MousePosition);
 
 		Window.clear();
 
 		Window.draw(BoardSprite);
 
-		Manager->Draw(Window);
+		Manager->DrawPawns(Window);
 
 		Window.display();
 	}

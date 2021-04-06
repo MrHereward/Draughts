@@ -7,23 +7,23 @@
 class PawnsManager
 {
 private:
-	std::vector<Pawn*> Pawns;
+	std::vector<Pawn*> Pawns{};
 
-	PawnsManager(const std::vector<Pawn*>& _Pawns);
+	PawnsManager();
 
 	static PawnsManager* Manager;
 
 public:
-	PawnsManager() = delete;
+	static PawnsManager* GetInstance();
 
-	static PawnsManager* GetInstance(const std::vector<Pawn*>& _Pawns);
+	void AddPawns(const std::vector<Pawn*>& _Pawns);
 
-	void MousePressed(sf::Vector2i MousePosition);
+	void MousePressedPawns(sf::Vector2i MousePosition);
 
-	void MouseReleased();
+	void MouseReleasedPawns();
 
-	void Move(sf::Vector2i MousePosition);
+	void MovePawns(sf::Vector2i MousePosition);
 
-	void Draw(sf::RenderWindow& Window);
+	void DrawPawns(sf::RenderWindow& Window);
 
 };

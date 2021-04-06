@@ -1,57 +1,56 @@
 #include "Pawn.h"
 
 Pawn::Pawn(float x, float y, PAWNTYPE _PawnType, sf::Texture& _Texture)
-	: PawnType{ _PawnType }, IsMove{ false }
+	: PawnType{ _PawnType }, IsMove{ false }, Position{ CalcualtePosition() }
 {
 	setPosition(x, y);
 	setTexture(_Texture);
-	SetPosition();
 }
 
-void Pawn::SetPawnType(PAWNTYPE _PawnType, sf::Texture _Texture)
+void Pawn::MousePressed(sf::Vector2i MousePosition)
 {
-	PawnType = { _PawnType };
-	setTexture(_Texture);
+	if (getGlobalBounds().contains(MousePosition.x, MousePosition.y))
+	{
+		IsMove = { true };
+
+		MovePosition = { sf::Vector2i(MousePosition.x - getPosition().x, MousePosition.y - getPosition().y) };
+	}
 }
 
-PAWNTYPE Pawn::GetPawnType()
+void Pawn::MouseReleased()
 {
-	return PawnType;
+	if (IsMove)
+	{
+		sf::Vector2f CurrentPosition{ getPosition() };
+
+		IsMove = { false };
+
+		sf::Vector2f NewPosition{ sf::Vector2f(48 + (88 * static_cast<int>(getPosition().x / 88)), 48 + (88 * static_cast<int>(getPosition().y / 88))) };
+		/*
+		if ((NewPosition.x + 88 == CurrentPosition.x && NewPosition.y + 88 == CurrentPosition.y) || (NewPosition.x + 88 == CurrentPosition.x - 88 == CurrentPosition.x && NewPosition.y + 88 == CurrentPosition.y))
+		{
+			setPosition(NewPosition);
+		}
+		else
+		{
+			setPosition(CurrentPosition);
+		}*/
+
+		setPosition(NewPosition);
+	}
 }
 
-void Pawn::SetMovePosition(sf::Vector2i _Position)
+void Pawn::Move(sf::Vector2i MousePosition)
 {
-	MovePosition = { _Position };
+	if (IsMove)
+	{
+		setPosition(MousePosition.x - MovePosition.x, MousePosition.y - MovePosition.y);
+	}
 }
 
-sf::Vector2i Pawn::GetMovePosition()
+void Pawn::Draw(sf::RenderWindow& Window)
 {
-	return MovePosition;
-}
-
-void Pawn::SetIsMove(bool _IsMove)
-{
-	IsMove = { _IsMove };
-}
-
-bool Pawn::GetIsMove()
-{
-	return IsMove;
-}
-
-void Pawn::SetPosition()
-{
-	std::string _Position;
-
-	_Position = { static_cast<char>(((getPosition().x - 48) / 88 + 1) + 48) };
-	_Position += static_cast<char>(((getPosition().y - 48) / 88) + 97);
-
-	Position = { _Position };
-}
-
-std::string Pawn::GetPosition()
-{
-	return Position;
+	Window.draw(*this);
 }
 
 std::string Pawn::CalcualtePosition()

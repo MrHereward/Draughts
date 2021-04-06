@@ -7,13 +7,11 @@ enum class PAWNTYPE : unsigned char
 {
 	WHITE,
 	BLACK,
-	WHITEQUEEN,
-	BLACKQUEEN
 };
 
 class Pawn : public sf::Sprite
 {
-private:
+protected:
 	PAWNTYPE PawnType;
 
 	sf::Vector2i MovePosition{};
@@ -24,18 +22,18 @@ private:
 
 public:
 	Pawn(float x, float y, PAWNTYPE _PawnType, sf::Texture& _Texture);
-
-	void SetPawnType(PAWNTYPE _PawnType, sf::Texture _Texture);
-	PAWNTYPE GetPawnType();
-
-	void SetMovePosition(sf::Vector2i _Position);
-	sf::Vector2i GetMovePosition();
-
-	void SetIsMove(bool _IsMove);
-	bool GetIsMove();
 	
-	void SetPosition();
-	std::string GetPosition();
+	Pawn() = default;
+
+	virtual void MousePressed(sf::Vector2i MousePosition);
+
+	//std::string
+	virtual void MouseReleased();
+
+	virtual void Move(sf::Vector2i MousePosition);
+
+	virtual void Draw(sf::RenderWindow& Window);
+
 	std::string CalcualtePosition();
 
 };
