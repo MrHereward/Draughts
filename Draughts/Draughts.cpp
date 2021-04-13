@@ -101,15 +101,15 @@ void Draughts::PlacePawns()
 	{
 		for (char j = (i % 2 == 0) ? 97 : 98; j < 105; j += 2)
 		{
-			Board[j][i] = { new Pawn((j - 96) * 88 + 48, i * 88 + 48, PAWNTYPE::WHITE, WhiteTexture) };
+			Board[j][i] = { new Pawn((j - 97) * 88 + 48, (i - 1) * 88 + 48, PAWNTYPE::WHITE, WhiteTexture) };
 		}
 	}
 
 	for (int i = 6; i <= 8; ++i)
 	{
-		for (char j = (i % 2 == 0) ? 98 : 97; j < 105; j += 2)
+		for (char j = (i % 2 == 1) ? 98 : 97; j < 105; j += 2)
 		{
-			Board[j][i] = { new Pawn((j - 96) * 88 + 48, i * 88 + 48, PAWNTYPE::BLACK, BlackTexture) };
+			Board[j][i] = { new Pawn((j - 97) * 88 + 48, (i - 1) * 88 + 48, PAWNTYPE::BLACK, BlackTexture) };
 		}
 	}
 }

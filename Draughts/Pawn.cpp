@@ -33,11 +33,14 @@ std::string Pawn::MouseReleased(const std::map<char, std::map<int, Pawn*>>& Boar
 		{
 			for (const auto& [Integer, Element] : Map)
 			{
-				if (Element->Position == Position)
+				if (Element != nullptr)
 				{
-					setPosition(CurrentPosition);
+					if (Element->Position == Position)
+					{
+						setPosition(CurrentPosition);
 
-					return "";
+						return "";
+					}
 				}
 			}
 		}
