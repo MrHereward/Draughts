@@ -17,42 +17,51 @@ PawnsManager* PawnsManager::GetInstance()
 	return Manager;
 }
 
-void PawnsManager::AddPawns(const std::vector<Pawn*>& _Pawns)
+void PawnsManager::AddPawn(char X, int Y, Pawn* NewPawn, std::map<char, std::map<int, Pawn*>>& Board)
 {
-	for (const auto& Element : _Pawns)
+	Board[X][Y] = { NewPawn };
+}
+
+void PawnsManager::MousePressedPawns(sf::Vector2i MousePosition, std::map<char, std::map<int, Pawn*>>& Board)
+{
+	for (const auto& [Character, Map] : Board)
 	{
-		Pawns.push_back(Element);
+		for (const auto& [Integer, Element] : Map)
+		{
+			Element->MousePressed(MousePosition);
+		}
 	}
 }
 
-void PawnsManager::MousePressedPawns(sf::Vector2i MousePosition)
+void PawnsManager::MouseReleasedPawns(std::map<char, std::map<int, Pawn*>>& Board)
 {
-	for (const auto& Element : Pawns)
+	for (const auto& [Character, Map] : Board)
 	{
-		Element->MousePressed(MousePosition);
+		for (const auto& [Integer, Element] : Map)
+		{
+			Element->MouseReleased(Board);
+		}
 	}
 }
 
-void PawnsManager::MouseReleasedPawns()
+void PawnsManager::MovePawns(sf::Vector2i MousePosition, std::map<char, std::map<int, Pawn*>>& Board)
 {
-	for (const auto& Element : Pawns)
+	for (const auto& [Character, Map] : Board)
 	{
-		Element->MouseReleased();
+		for (const auto& [Integer, Element] : Map)
+		{
+			Element->Move(MousePosition);
+		}
 	}
 }
 
-void PawnsManager::MovePawns(sf::Vector2i MousePosition)
+void PawnsManager::DrawPawns(sf::RenderWindow& Window, std::map<char, std::map<int, Pawn*>>& Board)
 {
-	for (const auto& Element : Pawns)
+	for (const auto& [Character, Map] : Board)
 	{
-		Element->Move(MousePosition);
-	}
-}
-
-void PawnsManager::DrawPawns(sf::RenderWindow& Window)
-{
-	for (const auto& Element : Pawns)
-	{
-		Element->Draw(Window);
+		for (const auto& [Integer, Element] : Map)
+		{
+			Element->Draw(Window);
+		}
 	}
 }

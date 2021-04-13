@@ -15,6 +15,7 @@ protected:
 	PAWNTYPE PawnType;
 
 	sf::Vector2i MovePosition{};
+	sf::Vector2f CurrentPosition{};
 
 	std::string Position;
 
@@ -27,13 +28,12 @@ public:
 
 	virtual void MousePressed(sf::Vector2i MousePosition);
 
-	//std::string
-	virtual void MouseReleased();
+	virtual std::string MouseReleased(const std::map<char, std::map<int, Pawn*>>& Board);
 
 	virtual void Move(sf::Vector2i MousePosition);
 
 	virtual void Draw(sf::RenderWindow& Window);
 
-	std::string CalcualtePosition();
+	static std::string CalcualtePosition(const sf::Vector2f& PositionToCalculate);
 
 };

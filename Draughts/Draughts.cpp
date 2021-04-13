@@ -21,7 +21,7 @@ void Draughts::MainLoop()
 
 	Manager = { PawnsManager::GetInstance() };
 
-	Manager->AddPawns(PlacePawns());
+	PlacePawns();
 
 	while (Window.isOpen())
 	{
@@ -39,7 +39,7 @@ void Draughts::MainLoop()
 			case sf::Event::MouseButtonPressed:
 				if (MainEvent.key.code == sf::Mouse::Left)
 				{
-					Manager->MousePressedPawns(MousePosition);
+					Manager->MousePressedPawns(MousePosition, Board);
 				}
 
 				break;
@@ -47,7 +47,7 @@ void Draughts::MainLoop()
 			case sf::Event::MouseButtonReleased:
 				if (MainEvent.key.code == sf::Mouse::Left)
 				{
-					Manager->MouseReleasedPawns();
+					Manager->MouseReleasedPawns(Board);
 				}
 
 				break;
@@ -55,21 +55,21 @@ void Draughts::MainLoop()
 			}
 		}
 
-		Manager->MovePawns(MousePosition);
+		Manager->MovePawns(MousePosition, Board);
 
 		Window.clear();
 
 		Window.draw(BoardSprite);
 
-		Manager->DrawPawns(Window);
+		Manager->DrawPawns(Window, Board);
 
 		Window.display();
 	}
 }
 
-std::vector<Pawn*> Draughts::PlacePawns()
+void Draughts::PlacePawns()
 {
-	std::vector<Pawn*> Pawns;
+	/*std::vector<Pawn*> Pawns;
 
 	for (int i = 48; i < 312; i += 88)
 	{
@@ -87,5 +87,29 @@ std::vector<Pawn*> Draughts::PlacePawns()
 		}
 	}
 
-	return Pawns;
+	return Pawns;*/
+	
+	for (int i = 1; i <= 8; ++i)
+	{
+		for (char j = 97; j < 105; ++j)
+		{
+			Board[j][i] = { nullptr };
+		}
+	}
+
+	for (int i = 1; i <= 3; ++i)
+	{
+		for (char j = (i % 2 == 0) ? 97 : 98; j < 105; j += 2)
+		{
+			Board[j][i] = { new Pawn((j - 96) * 88 + 48, i * 88 + 48, PAWNTYPE::WHITE, WhiteTexture) };
+		}
+	}
+
+	for (int i = 6; i <= 8; ++i)
+	{
+		for (char j = (i % 2 == 0) ? 98 : 97; j < 105; j += 2)
+		{
+			Board[j][i] = { new Pawn((j - 96) * 88 + 48, i * 88 + 48, PAWNTYPE::BLACK, BlackTexture) };
+		}
+	}
 }

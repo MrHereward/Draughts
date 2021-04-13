@@ -1,4 +1,6 @@
 #include "Draughts.h"
+#include <iostream>
+#include <map>
 
 int main()
 {
